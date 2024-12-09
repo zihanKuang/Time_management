@@ -77,7 +77,7 @@ const MainCalendar=()=>{
 
         <div style={{display:"flex",justifyContent:"space-around",padding:"10px",borderTop:"1px solid #ccc"}}>
 
-          {subCalendars.map((calendar,index)=>{
+          {subCalendars.map((calendar,index)=>(
             <button 
             key={index}  
             onClick={() => setActiveCalendar(calendar)}
@@ -90,7 +90,7 @@ const MainCalendar=()=>{
             >
               {calendar}
             </button>
-          })}
+          ))}
 
           <button onClick={addSubCalendar}>
             Add Calendar

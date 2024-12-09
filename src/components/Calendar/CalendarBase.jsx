@@ -7,7 +7,6 @@
 import React,{useState,useEffect} from "react";
 import PropTypes from "prop-types";
 import {format} from "date-fns";
-import { render } from "@testing-library/react";
 
 const CalendarBase = ({currentDate,fetchTasks,renderTasks}) => {
     //State for storing tasks

@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.js": "/zihanKuang/Time_management/static/js/main.80abb0f3.js",
-    "index.html": "/zihanKuang/Time_management/index.html",
-    "main.80abb0f3.js.map": "/zihanKuang/Time_management/static/js/main.80abb0f3.js.map"
+    "main.js": "/Time_management/static/js/main.80abb0f3.js",
+    "index.html": "/Time_management/index.html",
+    "main.80abb0f3.js.map": "/Time_management/static/js/main.80abb0f3.js.map"
   },
   "entrypoints": [
     "static/js/main.80abb0f3.js"

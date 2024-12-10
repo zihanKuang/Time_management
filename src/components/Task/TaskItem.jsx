@@ -5,19 +5,20 @@ const TaskItem = ({task,onToggleComplete,onEdit,onDelete}) => {
     const [isEditing,setIsEditing] = useState(false);
     const[editTitle,setEditTitle] = useState(task.title);
 
-    const handelEdit=()=>{
-        setIsEditing(true);
-    }
-
     const handleSave=()=>{
         if(editTitle.trim()){
-            onEdit(task.id,editTitle);
-            setIsEditing(false);
+            onEdit(task.id,editTitle);// 调用父组件传递的onEdit函数
+            setIsEditing(false);// 退出编辑模式
         }
     };
 
     return(
-        <div styl{{display:`flex`,alignItem:`center`,marginBottom:`10px`}}>
+        <div 
+        style={{
+            display:`flex`,
+            alignItems:`center`,
+            marginBottom:`10px`,
+        }}>
 
         <input
             type="checkbox"
@@ -32,28 +33,31 @@ const TaskItem = ({task,onToggleComplete,onEdit,onDelete}) => {
             type="text"
             value={editTitle}
             onChange={(e)=> setEditTitle(e.target.value)}
-            onBlur={handleSave}
-            onKeyDown={(e)=>e.key === `Enter` && handleSave()}
-            style={{flexGrow:1,margin:`10px`}}
+            onBlur={handleSave} // save when losing focus
+            onKeyDown={(e)=>e.key === `Enter` && handleSave()} // save on Enter
+            style={{flexGrow:1,marginRight:`10px`}}
             ></input>
         ):(
         // Not in editing mode
         <span
             style={{
-                textDecoration: teak.isComplete?`line-through`:`none`,
+                textDecoration: task.isComplete?`line-through`:`none`,
                 flexGrow:1,
                 marginRight:`10px`,
             }}
-        >{task.title}</span>
+        >{task.title}
+        </span>
         )}
 
         // Handel buttons here
         {!isEditing &&(
             <div>
-            <button onClick={handelEdit} style = {{marginRight:`10px`}}>
-            Edit</button>
-            <button onClick={()=> onDelete(task.id)}>
-            Delete</button>
+                <button onClick={()=>setIsEditing(true)} style = {{marginRight:`10px`}}>
+                    Edit
+                </button>
+                <button onClick={()=> onDelete(task.id)}>
+                    Delete
+                </button>
             </div>
         )}
         </div>

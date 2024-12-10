@@ -5,8 +5,11 @@
 
 import React from 'react';
 import { startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, isSameDay, isSameMonth,format } from "date-fns";
+import { useTask } from "../../services/taskContext";
 
-const MonthCalendar = ({currentDate,fetchTasks,setSelectedDate }) =>{
+const MonthCalendar = ({currentDate,setSelectedDate }) =>{
+
+    const { fetchTasks } = useTask();
 
     // 全局都要用的变量，从父组件传过来
     //const [selectdDate,setSelectedDate] = useState(currentDate);
@@ -26,11 +29,7 @@ const MonthCalendar = ({currentDate,fetchTasks,setSelectedDate }) =>{
         return grid;
     };
 
-    // 更新父组件的 currentDate
-    const handleDateClick=(date)=>{
-        setSelectedDate(date);
-    };
-
+    // 获取日历网格
     const CalendarGrid = generateCalendarGrid(currentDate);
 
     return(
@@ -39,10 +38,12 @@ const MonthCalendar = ({currentDate,fetchTasks,setSelectedDate }) =>{
                 {format(currentDate,"MMMMM yyyy")}
             </h2>
             <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:"10px"}}>
-                {CalendarGrid.map((date,index)=>(
+                {CalendarGrid.map((date,index)=>{
+                    const tasks = fetchTasks(format(date,"yyyy-MM-dd"));// 获得任务
+                    return(
                     <div 
-                    key={index}
-                    style={{
+                        key={index}
+                        style={{
                         padding:"10px",
                         textAlign:"center",
                         backgroundColor:isSameDay(date,currentDate)?"lightblue":"white",
@@ -50,11 +51,36 @@ const MonthCalendar = ({currentDate,fetchTasks,setSelectedDate }) =>{
                         border:"1px solid #ccc",
                         cursor:"pointer",
                     }}
-                    onClick={()=>handleDateClick(date)}
+                    onClick={()=>setSelectedDate(date)}
                     >
-                        {format(date,"d")}
+
+                    <div style={{fontWeight:"bold"}}>{format(date,"d")}</div>
+
+                    <div style={{margin:"5px",fontSize:"0.8em",textAlign:"left"}}>
+                        {
+
+                            tasks.map((task,taskIndex)=>{
+                                return(
+                                    <div
+                                    key={taskIndex}
+                                    style={{
+                                        backgroundColor:"#f0f0f0",
+                                        borderRadius:"3px",
+                                        padding:"2px 4px",
+                                        marginBottom:"2px",
+                                        overflow:"hidden",
+                                        whiteSpace:"nowrap",
+                                        textOverflow:"ellipsis"
+                                    }}
+                                    title={task.title}
+                                    ></div>);
+                                })
+                        }
+
                     </div>
-                ))}
+                    </div>
+                    );
+                })}
             </div>
         </div>
     );

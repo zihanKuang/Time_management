@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/Time_management/static/js/main.36073a09.js",
+    "main.js": "/Time_management/static/js/main.b53d0c92.js",
     "index.html": "/Time_management/index.html",
-    "main.36073a09.js.map": "/Time_management/static/js/main.36073a09.js.map"
+    "main.b53d0c92.js.map": "/Time_management/static/js/main.b53d0c92.js.map"
   },
   "entrypoints": [
-    "static/js/main.36073a09.js"
+    "static/js/main.b53d0c92.js"
   ]
 }

@@ -1,27 +1,18 @@
 import React from "react";
 import CalendarBase from "./CalendarBase";
+import { useTask } from "../../services/taskContext";
 
-export const DayCalendar = ({ currentDate, fetchTasks, editTask, deleteTask, toggleTaskStatus }) => {
-    const handleEdit = (taskId) => {
-        editTask(taskId);
-    };
-
-    const handleDelete = (taskId) => {
-        deleteTask(taskId);
-    };
-
-    const handleToggleStatus = (taskId) => {
-        toggleTaskStatus(taskId);
-    };
-
+export const DayCalendar = ({ currentDate}) => {
+    const {fetchTasks,toggleTaskStatus,editTask,deleteTask} = useTask();
+    const tasks = fetchTasks(currentDate);
+    
     return (
         <CalendarBase
 
             currentDate={currentDate}
-            fetchTasks={fetchTasks}
 
-            renderTasks={(tasks) => (
-
+            renderTasks={() => (
+                
                 <ul style={{listStyle:"none",padding:0}}>
                     {tasks.map((task) => (
                         <li key={task.id}>
@@ -29,15 +20,15 @@ export const DayCalendar = ({ currentDate, fetchTasks, editTask, deleteTask, tog
                             <input 
                             type="checkbox" 
                             checked={task.completed} 
-                            onChange={()=>handleToggleStatus(task.id)}>
+                            onChange={()=>toggleTaskStatus(currentDate,task.id)}>
                             </input>
 
                             <span style={{ textDecoration: task.completed ? "line-through" : "none" }}>
                                 {task.title}
                             </span>
 
-                            <button onClick={() => handleEdit(task.id)}>Edit</button>
-                            <button onClick={() => handleDelete(task.id)}>Delete</button>
+                            <button onClick={() => editTask(currentDate,task.id)}>Edit</button>
+                            <button onClick={() => deleteTask(currentDate,task.id)}>Delete</button>
 
                         </li>
                     ))}

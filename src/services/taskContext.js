@@ -1,4 +1,4 @@
-import React ,{Children, createContext,useContext,useState} from "react";
+import React ,{createContext,useContext,useState} from "react";
 
 // 创建上下文
 const TaskContext = createContext();
@@ -7,7 +7,7 @@ const TaskContext = createContext();
 export const useTask = () => useContext(TaskContext);
 
 //提供者组件
-export const TaskProvider = ({Children}) => {
+export const TaskProvider = ({children}) => {
     // 不要直接更新，会出问题 无法触发数据更新
 
     const [tasks,setTasks] = useState({
@@ -59,7 +59,7 @@ export const TaskProvider = ({Children}) => {
 
     return(
         <TaskContext.Provider value={{tasks,toggleTaskStatus,editTask,deleteTask,fetchTasks}}>
-            {Children}
+            {children}
         </TaskContext.Provider>
 
     )

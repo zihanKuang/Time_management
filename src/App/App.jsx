@@ -1,41 +1,20 @@
 // 引入 React 核心库
-import React, { Component, useState } from "react";
+import React, {Component, useState } from "react";
 // 引入你的组件
+import { TaskProvider } from "../services/taskContext";
 import DayCalendar from "../components/Calendar/DayCalendar";
 import MonthCalendar from "../components/Calendar/MonthCalendar";
-
-const mockTasks={
-  "2024-12-01":[{id:1,title:"Task 1",completed:false}],
-  "2024-12-05":[
-    {id:2,title:"Task 123",completed:false},
-    {id:3,title:"Task 234",completed:true},
-  ],
-};
-
-const fetchTasks = async(date) => { 
-  return mockTasks[date]||[];
-};
-
-const editTask=(taskId) =>{
-  console.log(`Edit task: ${taskId}`);
-};
-
-const deleteTask=(taskId)=>{
-  console.log(`Delete task:${taskId}`);
-};
-
-const toggleTaskStatus=(taskId)=>{
-  console.log(`Toggle task status:${taskId}`);
-};
 
 //创建并暴露App组件
 export default class App extends Component{
   render(){
     return(
-      <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
-      <h1 style={{ textAlign: "center" }}>My Calendar App</h1>
-        <MainCalendar></MainCalendar>
-      </div>
+      <TaskProvider>
+        <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+          <h1 style={{ textAlign: "center" }}>My Calendar App</h1>
+          <MainCalendar></MainCalendar>
+        </div>
+      </TaskProvider>
     );
   }
 }
@@ -59,7 +38,6 @@ const MainCalendar=()=>{
           <div style={{flex:2,borderRight:"1px solid #ccc", padding: "10px"}}>
             <MonthCalendar
             currentDate={currentDate}
-            fetchTasks={fetchTasks}
             setSelectedDate={setCurrentDate}// 传递 setCurrentDate 给子组件
             ></MonthCalendar>
           </div>
@@ -67,10 +45,6 @@ const MainCalendar=()=>{
           <div style={{flex:3, padding: "10px"}}>
             <DayCalendar
             currentDate={currentDate}
-            fetchTasks={fetchTasks}
-            editTask={editTask}
-            deleteTask={deleteTask}
-            toggleTaskStatus={toggleTaskStatus}
           ></DayCalendar>
           </div>
         </div>

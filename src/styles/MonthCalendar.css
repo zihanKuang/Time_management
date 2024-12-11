@@ -1,0 +1,51 @@
+.month-calendar {
+    text-align: center;
+  }
+  
+  .calendar-header {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+  
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+  }
+  
+  .calendar-cell {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .calendar-cell.selected {
+    background-color: lightblue;
+  }
+  
+  .calendar-cell.outside-month {
+    color: gray;
+  }
+  
+  .calendar-day {
+    font-weight: bold;
+  }
+  
+  .task-preview {
+    margin: 5px;
+    font-size: 0.8em;
+    text-align: left;
+  }
+  
+  .task-item {
+    background-color: #f0f0f0;
+    border-radius: 3px;
+    padding: 2px 4px;
+    margin-bottom: 2px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  

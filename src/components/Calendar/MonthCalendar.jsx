@@ -17,15 +17,13 @@ const MonthCalendar = ({currentDate,setSelectedDate }) =>{
     const generateCalendarGrid =(date)=>{
         const startDate = startOfWeek(startOfMonth(date));
         const endDate = endOfWeek(endOfMonth(date));
-
         const grid = [];
-        let currentDayPoint = startDate;
 
+        let currentDayPoint = startDate;
         while(currentDayPoint <= endDate){
             grid.push(currentDayPoint);
             currentDayPoint = addDays(currentDayPoint,1);
         }
-
         return grid;
     };
 
@@ -33,51 +31,30 @@ const MonthCalendar = ({currentDate,setSelectedDate }) =>{
     const CalendarGrid = generateCalendarGrid(currentDate);
 
     return(
-        <div>
-            <h2 style={{textAlign:"center"}}>
-                {format(currentDate,"MMMMM yyyy")}
-            </h2>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:"10px"}}>
+        <div> className="month-calendar"
+            <h2 className='month-header'>{format(currentDate,"MMMMM yyyy")}</h2>
+            <div className='calendar-header'>
                 {CalendarGrid.map((date,index)=>{
                     const tasks = fetchTasks(format(date,"yyyy-MM-dd"));// 获得任务
+
                     return(
                     <div 
                         key={index}
-                        style={{
-                        padding:"10px",
-                        textAlign:"center",
-                        backgroundColor:isSameDay(date,currentDate)?"lightblue":"white",
-                        color:isSameMonth(date,currentDate)?"black":"gray",
-                        border:"1px solid #ccc",
-                        cursor:"pointer",
-                    }}
-                    onClick={()=>setSelectedDate(date)}
-                    >
+                        className={`calendar-cell ${
+                            isSameDay(date,currentDate) ? "selected" : "" 
+                        } $ isSameDay(date,currentDate) ? "":"outside-month"}`}
+                    onClick={()=>setSelectedDate(date)}>
 
-                    <div style={{fontWeight:"bold"}}>{format(date,"d")}</div>
+                    <div className='calendar-day'>{format(date,"d")}</div>
 
-                    <div style={{margin:"5px",fontSize:"0.8em",textAlign:"left"}}>
-                        {
-
-                            tasks.map((task,taskIndex)=>{
-                                return(
-                                    <div
-                                    key={taskIndex}
-                                    style={{
-                                        backgroundColor:"#f0f0f0",
-                                        borderRadius:"3px",
-                                        padding:"2px 4px",
-                                        marginBottom:"2px",
-                                        overflow:"hidden",
-                                        whiteSpace:"nowrap",
-                                        textOverflow:"ellipsis"
-                                    }}
-                                    title={task.title}
-                                    ></div>);
-                                })
-                        }
-
+                    <div className='task-preview'>
+                        {tasks.map((task,taskIndex)=>(
+                            <div key={taskIndex} className="task-item" title={task.title}>
+                                {task.title}
+                            </div>
+                        ))}
                     </div>
+
                     </div>
                     );
                 })}

@@ -59,13 +59,15 @@ export const TaskProvider = ({children}) => {
     // 从tasks中查找指定日期的任务
     // 根据calendarID过滤任务
     // 如果没有提供calendarID就返回所有任务
-    const fetchTasks = (date,calendarId ) => {
-        const formattedDate = format(date, "yyyy-MM-dd"); 
+    // calendarId不是字符串，不要用===
+    const fetchTasks = (date, activeCalendars) => {
+        const formattedDate = format(date, "yyyy-MM-dd");
         const tasksForDate = tasks[formattedDate] || [];
-        return calendarId
-            ? tasksForDate.filter((tasks)=>tasks.calendarId === calendarId)
-            : tasksForDate;
-    };
+        return activeCalendars && activeCalendars.length > 0
+          ? tasksForDate.filter((task) => activeCalendars.includes(task.calendarId))
+          : tasksForDate;
+      };
+      
 
     return(
         <TaskContext.Provider value={{tasks,toggleTaskStatus,editTask,deleteTask,fetchTasks}}>

@@ -3,47 +3,38 @@
   display: grid;
   grid-template-columns: repeat(7, 100px); /* 每列固定宽度 */
   gap: 10px;
-  justify-content: center; /* 水平居中网格 */
-  align-content: center; /* 垂直居中网格 */
+  justify-content: center;
+  align-content: center;
 }
 
 /* 日历单元格 */
 .calendar-cell {
-  width: 100px; /* 固定宽度 */
-  height: 100px; /* 固定高度 */
+  width: 100px;
+  height: 100px;
   padding: 10px;
   text-align: center;
   border-radius: 5px;
   background-color: white;
-  color: #1636C7; /* 字体颜色 */
+  color: #1636c7;
   cursor: pointer;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s, transform 0.2s;
-  box-sizing: border-box; /* 包括内边距在内计算尺寸 */
+  box-sizing: border-box;
 }
 
 /* 鼠标悬停效果 */
 .calendar-cell:hover {
-  background-color: #9FDDEC;
+  background-color: #9fddec;
   transform: scale(1.05);
 }
 
 /* 当前选中日期 */
 .calendar-cell.selected {
-  background-color: #E53542; /* 选中日期背景色 */
+  background-color: #e53542;
   color: white;
 }
 
 /* 月外日期 */
 .calendar-cell.outside-month {
-  color: #A0A0A0; /* 灰色 */
-}
-
-/* 滚动容器（可选） */
-.month-calendar {
-  overflow: auto; /* 如果网格溢出容器，显示滚动条 */
-  padding: 20px;
-  background-color: #61A2F9; /* 背景色 */
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: #a0a0a0;
 }

@@ -4,9 +4,9 @@ import { useTask } from "../../services/taskContext";
 import TaskItem from "../Task/TaskItem";
 import "./DayCalendar.css";
 
-export const DayCalendar = ({ currentDate,activeCalendar}) => {
-    const {fetchTasks,toggleTaskStatus,editTask,deleteTask} = useTask();
-    const tasks = fetchTasks(currentDate,activeCalendar);
+export const DayCalendar = ({ currentDate,activeCalendars}) => {
+    const {fetchTasks} = useTask();
+    const tasks = fetchTasks(currentDate,activeCalendars || []);
     console.log("Tasks:", tasks);
     
     return (

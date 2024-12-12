@@ -12,7 +12,6 @@ export default class App extends Component{
     return(
       <TaskProvider>
         <div className="app-container">
-          <h1 className="app-title"></h1>
           <MainCalendar/>
         </div>
       </TaskProvider>

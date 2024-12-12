@@ -13,7 +13,7 @@ export default class App extends Component{
       <TaskProvider>
         <div className="app-container">
           <h1 className="app-title"></h1>
-          <MainCalendar></MainCalendar>
+          <MainCalendar/>
         </div>
       </TaskProvider>
     );

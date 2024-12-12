@@ -1,28 +1,16 @@
-/* 月日历容器 */
-.month-calendar {
-  background-color: #61A2F9; /* 背景色 */
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* 日历标题 */
-.calendar-header {
-  font-size: 24px;
-  color: white;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
 /* 日历网格 */
 .calendar-grid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7, 100px); /* 每列固定宽度 */
   gap: 10px;
+  justify-content: center; /* 水平居中网格 */
+  align-content: center; /* 垂直居中网格 */
 }
 
 /* 日历单元格 */
 .calendar-cell {
+  width: 100px; /* 固定宽度 */
+  height: 100px; /* 固定高度 */
   padding: 10px;
   text-align: center;
   border-radius: 5px;
@@ -31,6 +19,7 @@
   cursor: pointer;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s, transform 0.2s;
+  box-sizing: border-box; /* 包括内边距在内计算尺寸 */
 }
 
 /* 鼠标悬停效果 */
@@ -50,21 +39,11 @@
   color: #A0A0A0; /* 灰色 */
 }
 
-/* 任务摘要 */
-.task-preview {
-  margin-top: 5px;
-  font-size: 12px;
-  text-align: left;
-}
-
-/* 任务条目 */
-.task-item {
-  background-color: #FBDE7A; /* 任务条目背景色 */
-  color: #000;
-  padding: 3px;
-  border-radius: 3px;
-  margin-bottom: 2px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+/* 滚动容器（可选） */
+.month-calendar {
+  overflow: auto; /* 如果网格溢出容器，显示滚动条 */
+  padding: 20px;
+  background-color: #61A2F9; /* 背景色 */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }

@@ -3,7 +3,7 @@ import { startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, isSameDay, i
 import { useTask } from "../../services/taskContext";
 import "./MonthCalendar.css";
 
-const MonthCalendar = ({ currentDate, setSelectedDate }) => {
+const MonthCalendar = ({ currentDate, setSelectedDate,activeCalendar }) => {
   const { fetchTasks } = useTask();
 
   // 生成日历网格
@@ -28,7 +28,9 @@ const MonthCalendar = ({ currentDate, setSelectedDate }) => {
 
       <div className="calendar-grid">
         {CalendarGrid.map((date, index) => {
-          const tasks = fetchTasks(format(date, "yyyy-MM-dd")); // 获取任务
+          const tasks = fetchTasks(
+            format(date, "yyyy-MM-dd"),
+            activeCalendar); // 获取任务
 
           return (
             <div

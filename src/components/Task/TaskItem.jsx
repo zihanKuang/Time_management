@@ -1,3 +1,8 @@
+// 实现单个任务的操作页面
+// 显示任务信息和状态
+// 支持编辑，完成和删除操作
+// 依赖父组件传递on Edit/on ToggleComplete/onDelete
+
 import React,{useState} from `react`;
 
 const TaskItem = ({task,onToggleComplete,onEdit,onDelete}) => {

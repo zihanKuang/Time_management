@@ -1,0 +1,53 @@
+/* 日任务列表容器 */
+.day-calendar {
+    background-color: #9FDDEC; /* 背景色 */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; /* 如果任务多，支持滚动 */
+}
+
+/* 任务列表样式 */
+.day-calendar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* 任务项样式 */
+.day-calendar li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #FBDE7A; /* 任务背景色 */
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 任务复选框 */
+.day-calendar input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+/* 任务标题 */
+.day-calendar span {
+    flex-grow: 1;
+    font-size: 16px;
+}
+
+/* 按钮样式 */
+.day-calendar button {
+    margin-left: 5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #E53542; /* 按钮背景色 */
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.day-calendar button:hover {
+    background-color: #C5302E;
+}

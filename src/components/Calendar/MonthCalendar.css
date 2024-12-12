@@ -1,51 +1,70 @@
+/* 月日历容器 */
 .month-calendar {
-    text-align: center;
-  }
-  
-  .calendar-header {
-    font-size: 1.5em;
-    margin-bottom: 10px;
-  }
-  
-  .calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 10px;
-  }
-  
-  .calendar-cell {
-    padding: 10px;
-    text-align: center;
-    border: 1px solid #ccc;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-  
-  .calendar-cell.selected {
-    background-color: lightblue;
-  }
-  
-  .calendar-cell.outside-month {
-    color: gray;
-  }
-  
-  .calendar-day {
-    font-weight: bold;
-  }
-  
-  .task-preview {
-    margin: 5px;
-    font-size: 0.8em;
-    text-align: left;
-  }
-  
-  .task-item {
-    background-color: #f0f0f0;
-    border-radius: 3px;
-    padding: 2px 4px;
-    margin-bottom: 2px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-  
+  background-color: #61A2F9; /* 背景色 */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 日历标题 */
+.calendar-header {
+  font-size: 24px;
+  color: white;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* 日历网格 */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+}
+
+/* 日历单元格 */
+.calendar-cell {
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px;
+  background-color: white;
+  color: #1636C7; /* 字体颜色 */
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+/* 鼠标悬停效果 */
+.calendar-cell:hover {
+  background-color: #9FDDEC;
+  transform: scale(1.05);
+}
+
+/* 当前选中日期 */
+.calendar-cell.selected {
+  background-color: #E53542; /* 选中日期背景色 */
+  color: white;
+}
+
+/* 月外日期 */
+.calendar-cell.outside-month {
+  color: #A0A0A0; /* 灰色 */
+}
+
+/* 任务摘要 */
+.task-preview {
+  margin-top: 5px;
+  font-size: 12px;
+  text-align: left;
+}
+
+/* 任务条目 */
+.task-item {
+  background-color: #FBDE7A; /* 任务条目背景色 */
+  color: #000;
+  padding: 3px;
+  border-radius: 3px;
+  margin-bottom: 2px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

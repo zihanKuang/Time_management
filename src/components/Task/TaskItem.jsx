@@ -1,72 +1,43 @@
-// 实现单个任务的操作页面
-// 显示任务信息和状态
-// 支持编辑，完成和删除操作
-// 依赖父组件传递on Edit/on ToggleComplete/onDelete
+// src/components/Task/TaskItem.jsx
+import React from "react";
+import { useTask } from "../../services/taskContext";
 
-import React,{useState} from `react`;
+const TaskItem = ({ date, task, viewOnly = false}) => {
+  const { toggleTaskStatus, editTask, deleteTask } = useTask();
 
-const TaskItem = ({task,onToggleComplete,onEdit,onDelete}) => {
-    //Local state for editing
-    const [isEditing,setIsEditing] = useState(false);
-    const[editTitle,setEditTitle] = useState(task.title);
+  const handleToggle = () => {
+    toggleTaskStatus(date, task.id);
+  };
 
-    const handleSave=()=>{
-        if(editTitle.trim()){
-            onEdit(task.id,editTitle);// 调用父组件传递的onEdit函数
-            setIsEditing(false);// 退出编辑模式
-        }
-    };
+  const handleEdit = () => {
+    const newTitle = prompt("Edit task title:", task.title);
+    if (newTitle) {
+      editTask(date, task.id, { title: newTitle });
+    }
+  };
 
-    return(
-        <div 
-        style={{
-            display:`flex`,
-            alignItems:`center`,
-            marginBottom:`10px`,
-        }}>
+  const handleDelete = () => {
+    if (window.confirm("Are you sure you want to delete this task?")) {
+      deleteTask(date, task.id);
+    }
+  };
 
-        <input
-            type="checkbox"
-            checked ={task.isComplete}
-            onChange={()=> onToggleComplete(task.id)}
-            style={{marginRight:`10px`}}
-        ></input>
-
-        // If is in editing mode
-        {isEditing?(
-            <input
-            type="text"
-            value={editTitle}
-            onChange={(e)=> setEditTitle(e.target.value)}
-            onBlur={handleSave} // save when losing focus
-            onKeyDown={(e)=>e.key === `Enter` && handleSave()} // save on Enter
-            style={{flexGrow:1,marginRight:`10px`}}
-            ></input>
-        ):(
-        // Not in editing mode
-        <span
-            style={{
-                textDecoration: task.isComplete?`line-through`:`none`,
-                flexGrow:1,
-                marginRight:`10px`,
-            }}
-        >{task.title}
-        </span>
+  return (
+    <div className={`task-item ${task.completed ? "completed" : ""}`}>
+        <span className="task-title">{task.title}</span>
+        {!viewOnly && (
+            <span className="task-ations">
+                <input
+                type="checkbox"
+                checked={task.completed}
+                onChange={handleToggle}
+                />
+                <button onClick={handleEdit}>Edit</button>
+                <button onClick={handleDelete}>Delete</button>
+            </span>
         )}
-
-        // Handel buttons here
-        {!isEditing &&(
-            <div>
-                <button onClick={()=>setIsEditing(true)} style = {{marginRight:`10px`}}>
-                    Edit
-                </button>
-                <button onClick={()=> onDelete(task.id)}>
-                    Delete
-                </button>
-            </div>
-        )}
-        </div>
-);
+    </div>
+  );
 };
 
 export default TaskItem;

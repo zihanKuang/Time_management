@@ -1,6 +1,7 @@
 import React from "react";
 import { startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, isSameDay, isSameMonth, format } from "date-fns";
 import { useTask } from "../../services/taskContext";
+import TaskItem from "../Task/TaskItem";
 import "./MonthCalendar.css";
 
 const MonthCalendar = ({ currentDate, setSelectedDate,activeCalendar }) => {
@@ -43,10 +44,13 @@ const MonthCalendar = ({ currentDate, setSelectedDate,activeCalendar }) => {
               <div className="calendar-day">{format(date, "d")}</div>
 
               <div className="task-preview">
-                {tasks.map((task, taskIndex) => (
-                  <div key={taskIndex} className="task-item" title={task.title}>
-                    {task.title}
-                  </div>
+                {tasks.map((task)=>(
+                  <TaskItem
+                  key={task.id}
+                  date={format(date,"yyyy-MM-dd")}
+                  task={task}
+                  viewOnly={true} // 设置为仅展示模式
+                  ></TaskItem>
                 ))}
               </div>
             </div>

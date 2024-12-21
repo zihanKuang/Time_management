@@ -35,10 +35,14 @@
   margin-right: 10px;
 }
 
-/* 月日历（右侧） */
+/* 月视图 */
 .month-calendar {
   flex: 2;
+  padding: 10px;
+  border-right: 1px solid #ccc;
+  position: relative; /* 为 TaskForm 的定位提供支持 */
 }
+
 
 /* 控制按钮区 */
 .calendar-controls {
@@ -69,7 +73,7 @@
 }
 
 /* 添加子日历按钮 */
-.add-calendar-button {
+.add-calendar-button{
   background-color: #9FDDEC;
   color: #000;
   padding: 10px 20px;
@@ -77,6 +81,17 @@
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
+}
+
+.add-task-button {
+  background-color: #9FDDEC;
+  color: #000;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-left: auto; /* 将按钮推到最右侧 */
 }
 
 .add-calendar-button:hover {

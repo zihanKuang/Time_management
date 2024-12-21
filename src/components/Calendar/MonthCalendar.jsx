@@ -1,13 +1,28 @@
-import React, { useState } from "react";
-import { startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, isSameDay, isSameMonth, format } from "date-fns";
+// src/components/Calendar/MonthCalendar.jsx
+import React, { useMemo } from "react";
+import {
+  startOfMonth,
+  endOfMonth,
+  startOfWeek,
+  endOfWeek,
+  addDays,
+  isSameDay,
+  isSameMonth,
+  format,
+} from "date-fns";
 import { useTask } from "../../services/taskContext";
 import TaskItem from "../Task/TaskItem";
-import MonthChoiceBar from "../Navigation/MonthChoiceBar"; 
-import CalendarButton from "../Navigation/CalendarButton"; 
+import MonthChoiceBar from "../Navigation/MonthChoiceBar";
+import CalendarButton from "../Navigation/CalendarButton";
 import "./MonthCalendar.css";
 
-const MonthCalendar = ({ currentDate, setSelectedDate }) => {
-
+const MonthCalendar = ({
+  currentDate,
+  setSelectedDate,
+  activeCalendars,
+  addSubCalendar,
+  toggleActiveCalendar,
+}) => {
   const { fetchTasks } = useTask();
 
   // 子日历选项
@@ -17,41 +32,35 @@ const MonthCalendar = ({ currentDate, setSelectedDate }) => {
     { id: "Personal", name: "Personal" },
   ];
 
-  // 当前选中的子日历（多选）
-  const [activeCalendars, setActiveCalendars] = useState(["Default"]);
-  console.log("Active Calendars:", activeCalendars);
-
-  // 生成日历网格
-  const generateCalendarGrid = (date) => {
-    const startDate = startOfWeek(startOfMonth(date));
-    const endDate = endOfWeek(endOfMonth(date));
+  // 生成该月在视图上的所有天
+  const calendarGrid = useMemo(() => {
+    const startDate = startOfWeek(startOfMonth(currentDate));
+    const endDate = endOfWeek(endOfMonth(currentDate));
     const grid = [];
-
-    let currentDay = startDate;
-    while (currentDay <= endDate) {
-      grid.push(currentDay);
-      currentDay = addDays(currentDay, 1);
+    let day = startDate;
+    while (day <= endDate) {
+      grid.push(day);
+      day = addDays(day, 1);
     }
     return grid;
-  };
+  }, [currentDate]);
 
-  const CalendarGrid = generateCalendarGrid(currentDate);
+  // 每一天的任务，已按活动子日历过滤
+  const dateTasksMap = useMemo(() => {
+    const map = {};
+    calendarGrid.forEach((date) => {
+      const formattedDate = format(date, "yyyy-MM-dd");
+      map[formattedDate] = fetchTasks(formattedDate, activeCalendars);
+    });
+    return map;
+  }, [calendarGrid, activeCalendars, fetchTasks]);
 
   const handleImport = () => {
     alert("Import functionality not implemented yet!");
   };
+
   const handleExport = () => {
     alert("Export functionality not implemented yet!");
-  };
-
-  const handleSelectCalendar = (id) => {
-    setActiveCalendars((prev) => {
-      const updated = prev.includes(id)
-        ? prev.filter((calendarId) => calendarId !== id)
-        : [...prev, id];
-      console.log("Updated Active Calendars:", updated); // 打印最新的状态
-      return updated;
-    });
   };
 
   return (
@@ -61,20 +70,19 @@ const MonthCalendar = ({ currentDate, setSelectedDate }) => {
       <MonthChoiceBar
         activeCalendars={activeCalendars}
         calendars={calendars}
-        onSelectCalendar={handleSelectCalendar}
+        onSelectCalendar={toggleActiveCalendar}
+        onAddCalendar={addSubCalendar}
       />
 
       <div className="calendar-actions">
-        <CalendarButton label="Import" onClick={handleImport} icon="📁"></CalendarButton>
-        <CalendarButton label="Export" onClick={handleExport} icon="📤"></CalendarButton>
+        <CalendarButton label="Import" onClick={handleImport} icon="📁" />
+        <CalendarButton label="Export" onClick={handleExport} icon="📤" />
       </div>
 
       <div className="calendar-grid">
-        {CalendarGrid.map((date, index) => {
-          const tasks = fetchTasks(
-            format(date, "yyyy-MM-dd"),
-            activeCalendars); // 获取任务
-            console.log("Tasks for date:", format(date, "yyyy-MM-dd"), "Calendars:", activeCalendars, "Tasks:", tasks);
+        {calendarGrid.map((date, index) => {
+          const formattedDate = format(date, "yyyy-MM-dd");
+          const dailyTasks = dateTasksMap[formattedDate] || [];
 
           return (
             <div
@@ -87,13 +95,9 @@ const MonthCalendar = ({ currentDate, setSelectedDate }) => {
               <div className="calendar-day">{format(date, "d")}</div>
 
               <div className="task-preview">
-                {tasks.map((task)=>(
-                  <TaskItem
-                  key={task.id}
-                  date={format(date,"yyyy-MM-dd")}
-                  task={task}
-                  viewOnly={true} // 设置为仅展示模式
-                  ></TaskItem>
+                {/* 只读模式，只显示 dailyTasks */}
+                {dailyTasks.map((task) => (
+                  <TaskItem key={task.id} date={formattedDate} task={task} viewOnly={true} />
                 ))}
               </div>
             </div>

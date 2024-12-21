@@ -1,79 +1,208 @@
-import React ,{createContext,useContext,useState} from "react";
+// src/services/taskContext.js
+import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { format } from "date-fns";
+import { openDB } from "idb";
 
-// 创建上下文
 const TaskContext = createContext();
 
-//自定义hook，用于消费任务上下文
 export const useTask = () => useContext(TaskContext);
 
-//提供者组件
-export const TaskProvider = ({children}) => {
-    // 不要直接更新，会出问题 无法触发数据更新
-
-    const [tasks,setTasks] = useState({
-        "2024-12-01":[{id:1,title:"Task 1",completed:false, calendarId: "Default"}],
-        "2024-12-05":[
-            { id: 2, title: "Task 123", completed: false, calendarId: "Work" },
-            { id: 3, title: "Task 234", completed: true, calendarId: "Personal" },
-        ],
-    })
-
-    const toggleTaskStatus = (date,id) => {
-        // 深度拷贝当前任务状态
-        const tasksForDate = tasks[date] ? [...tasks[date]]:[];
-        // 找到需要修改的任务
-        const updatedTasks = tasksForDate.map((task)=>
-            task.id === id?{...task,isComplete:!task.isComplete}:task);
-        // 更新状态
-        setTasks({...tasks,[date]:updatedTasks});
-    };
-
-    const editTask = (date, id, newData) => {
-        // 深度拷贝当前任务列表
-        const tasksForDate = tasks[date] ? [...tasks[date]] : [];
-        // 找到任务并更新
-        const updatedTasks = tasksForDate.map((task) =>
-            task.id === id ? { ...task, ...newData } : task
-        );
-        // 更新状态
-        setTasks({ ...tasks, [date]: updatedTasks });
-    };
-    
-
-    const deleteTask = (date,id) => {
-        // 获取指定日期的任务列表
-        // 如果该日期有任务，用 [...tasks[date]] 创建任务数组的拷贝（避免直接修改原状态）
-        // 如果该日期没有任务（tasks[date] 是 undefined），返回空数组 []。
-        const tasksForDate = tasks[date] ? [...tasks[date]]:[];
-        // 过滤掉指定任务
-        // 只保留 task.id 不等于 id 的任务
-        const updatedTasks = tasksForDate.filter((task) => {
-            return task.id !== id
+const initeDB = async () => {
+  try {
+    const db = await openDB("TaskDB", 2, {
+      upgrade(db) {
+        if (!db.objectStoreNames.contains("tasks")) {
+          db.createObjectStore("tasks", { keyPath: "id", autoIncrement: true });
+        }
+      },
     });
-        // { ...tasks }创建当前 tasks 状态的浅拷贝，保留原有的其他日期任务。
-        // [date]: updatedTasks 更新指定日期的任务列表为 updatedTasks，即过滤掉目标任务后的新数组。
-        setTasks({...tasks,[date]:updatedTasks});
-    };
+    console.log("Database initialized successfully:", db.name, db.version);
+    return db;
+  } catch (error) {
+    console.error("Failed to initialize database:", error);
+    throw error;
+  }
+};
 
-    // 从tasks中查找指定日期的任务
-    // 根据calendarID过滤任务
-    // 如果没有提供calendarID就返回所有任务
-    // calendarId不是字符串，不要用===
-    const fetchTasks = (date, activeCalendars) => {
-        const formattedDate = format(date, "yyyy-MM-dd");
-        const tasksForDate = tasks[formattedDate] || [];
-        return activeCalendars && activeCalendars.length > 0
-          ? tasksForDate.filter((task) => activeCalendars.includes(task.calendarId))
-          : tasksForDate;
+export const TaskProvider = ({ children }) => {
+  const [tasks, setTasks] = useState({});
+
+  // 初始化加载任务
+  const fetchInitialTasks = async () => {
+    try {
+      const db = await initeDB();
+      const allTasks = {};
+      const tx = db.transaction("tasks", "readonly");
+      const store = tx.objectStore("tasks");
+      let cursor = await store.openCursor();
+
+      while (cursor) {
+        const { date } = cursor.value;
+        if (!allTasks[date]) {
+          allTasks[date] = [];
+        }
+        allTasks[date].push(cursor.value);
+        cursor = await cursor.continue();
+      }
+
+      setTasks(allTasks);
+      console.log("Initial tasks loaded:", allTasks);
+    } catch (error) {
+      console.error("Failed to load tasks:", error);
+    }
+  };
+
+  // 添加任务
+  const addTask = async (newTask) => {
+    try {
+      const formattedDate = format(new Date(newTask.date || new Date()), "yyyy-MM-dd");
+      const sanitizedTask = {
+        title: newTask.title,
+        calendarId: newTask.calendarId || "Default",
+        date: formattedDate,
+        completed: newTask.completed || false,
       };
-      
 
-    return(
-        <TaskContext.Provider value={{tasks,toggleTaskStatus,editTask,deleteTask,fetchTasks}}>
-            {children}
-        </TaskContext.Provider>
+      const db = await initeDB();
+      const tx = db.transaction("tasks", "readwrite");
+      const store = tx.objectStore("tasks");
+      const id = await store.add(sanitizedTask);
+      const updatedTask = { id, ...sanitizedTask };
 
-    )
+      setTasks((prevTasks) => ({
+        ...prevTasks,
+        [formattedDate]: [...(prevTasks[formattedDate] || []), updatedTask],
+      }));
 
-}
+      console.log("Task added successfully:", updatedTask);
+    } catch (error) {
+      console.error("Failed to add task:", error);
+    }
+  };
+
+  // 删除任务（记得统一格式化 date）
+  const deleteTask = async (date, id) => {
+    try {
+      const dateKey = typeof date === "string"
+        ? date
+        : format(new Date(date), "yyyy-MM-dd");
+
+      setTasks((prevTasks) => {
+        const newTasks = { ...prevTasks };
+        if (newTasks[dateKey]) {
+          newTasks[dateKey] = newTasks[dateKey].filter((t) => t.id !== id);
+          if (newTasks[dateKey].length === 0) {
+            delete newTasks[dateKey];
+          }
+        }
+        return newTasks;
+      });
+
+      const db = await initeDB();
+      const tx = db.transaction("tasks", "readwrite");
+      const store = tx.objectStore("tasks");
+      await store.delete(id);
+
+      console.log(`Task with ID ${id} deleted successfully.`);
+    } catch (error) {
+      console.error(`Failed to delete task with ID ${id}:`, error);
+      await fetchInitialTasks(); // 如果数据库更新失败，重新加载
+    }
+  };
+
+  // 切换任务状态（也格式化 date）
+  const toggleTaskStatus = async (date, id) => {
+    try {
+      const dateKey = typeof date === "string"
+        ? date
+        : format(new Date(date), "yyyy-MM-dd");
+
+      const tasksForDate = tasks[dateKey] ? [...tasks[dateKey]] : [];
+      const updatedTasks = tasksForDate.map((task) =>
+        task.id === id ? { ...task, completed: !task.completed } : task
+      );
+
+      const updatedTask = updatedTasks.find((task) => task.id === id);
+      if (!updatedTask) {
+        throw new Error("Task ID is missing or invalid");
+      }
+
+      const db = await initeDB();
+      const tx = db.transaction("tasks", "readwrite");
+      const store = tx.objectStore("tasks");
+      await store.put(updatedTask);
+
+      setTasks((prevTasks) => ({
+        ...prevTasks,
+        [dateKey]: updatedTasks,
+      }));
+
+      console.log("Task status toggled:", updatedTask);
+    } catch (error) {
+      console.error("Failed to toggle task status:", error);
+    }
+  };
+
+  // 编辑任务（同理先格式化 date）
+  const editTask = async (date, id, newData) => {
+    try {
+      const dateKey = typeof date === "string"
+        ? date
+        : format(new Date(date), "yyyy-MM-dd");
+
+      const tasksForDate = tasks[dateKey] ? [...tasks[dateKey]] : [];
+      const updatedTasks = tasksForDate.map((task) =>
+        task.id === id ? { ...task, ...newData } : task
+      );
+
+      const updatedTask = updatedTasks.find((task) => task.id === id);
+
+      const db = await initeDB();
+      const tx = db.transaction("tasks", "readwrite");
+      const store = tx.objectStore("tasks");
+      await store.put(updatedTask);
+
+      setTasks((prevTasks) => ({
+        ...prevTasks,
+        [dateKey]: updatedTasks,
+      }));
+
+      console.log("Task edited:", updatedTask);
+    } catch (error) {
+      console.error("Failed to edit task:", error);
+    }
+  };
+
+  // 获取任务
+  const fetchTasks = useCallback(
+    (date, activeCalendars) => {
+      const formattedDate = format(date, "yyyy-MM-dd");
+      const tasksForDate = tasks[formattedDate] || [];
+
+      if (!activeCalendars || activeCalendars.length === 0) {
+        return tasksForDate;
+      }
+      return tasksForDate.filter((task) => activeCalendars.includes(task.calendarId));
+    },
+    [tasks]
+  );
+
+  useEffect(() => {
+    fetchInitialTasks();
+  }, []);
+
+  return (
+    <TaskContext.Provider
+      value={{
+        tasks,
+        addTask,
+        deleteTask,
+        toggleTaskStatus,
+        editTask,
+        fetchTasks,
+      }}
+    >
+      {children}
+    </TaskContext.Provider>
+  );
+};

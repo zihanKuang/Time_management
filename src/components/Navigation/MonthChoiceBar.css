@@ -1,10 +1,17 @@
 /* 子日历导航条 */
 .month-choice-bar {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-  }
-  
+  display: flex;
+  justify-content: flex-start; /* 调整为左对齐 */
+  align-items: center; /* 垂直居中 */
+  gap: 10px; /* 增加按钮之间的间距 */
+  margin-bottom: 20px;
+}
+
+.calendar-buttons {
+  display: flex;
+  gap: 10px; /* 子日历按钮之间的间距 */
+}
+
   /* 子日历按钮 */
   .calendar-choice-button {
     padding: 10px 20px;
@@ -16,7 +23,19 @@
     cursor: pointer;
     transition: all 0.2s ease-in-out;
   }
-  
+
+  /* Add Task 按钮样式 */
+.add-task-button {
+  padding: 10px 20px;
+  font-size: 14px;
+  border: 1px solid white;
+  background-color: #007bff; /* 绿色背景 */
+  color: white; /* 白色文字 */
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
   /* 激活状态的按钮 */
   .calendar-choice-button.active {
     background-color: #007bff; /* 激活背景色 */

@@ -4,7 +4,8 @@
 import React from "react";
 import "./MonthChoiceBar.css"; // 确保样式文件已导入
 
-const MonthChoiceBar = ({ activeCalendars, calendars, onSelectCalendar }) => {
+const MonthChoiceBar = ({ activeCalendars=[], calendars, onSelectCalendar,onAddCalendar }) => {
+
   return (
     <div className="month-choice-bar">
       {calendars.map((calendar) => (
@@ -18,6 +19,9 @@ const MonthChoiceBar = ({ activeCalendars, calendars, onSelectCalendar }) => {
           {calendar.name}
         </button>
       ))}
+      <button className="add-calendar-button" onClick={onAddCalendar}>
+        + Add Calendar
+      </button>
     </div>
   );
 };

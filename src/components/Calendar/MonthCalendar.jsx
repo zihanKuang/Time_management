@@ -66,13 +66,13 @@ const MonthCalendar = ({
       </div>
 
       <div className="calendar-grid">
-        {calendarGrid.map((date, index) => {
+        {calendarGrid.map((date) => {
           const formattedDate = format(date, "yyyy-MM-dd");
           const dailyTasks = dateTasksMap[formattedDate] || [];
 
           return (
             <div
-              key={index}
+              key={formattedDate}
               className={`calendar-cell ${
                 isSameDay(date, currentDate) ? "selected" : ""
               } ${isSameMonth(date, currentDate) ? "" : "outside-month"}`}

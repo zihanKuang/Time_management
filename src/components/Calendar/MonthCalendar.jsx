@@ -1,5 +1,5 @@
 // src/components/Calendar/MonthCalendar.jsx
-import React, { useMemo } from "react";
+import {React, useMemo } from "react";
 import {
   startOfMonth,
   endOfMonth,
@@ -19,18 +19,9 @@ import "./MonthCalendar.css";
 const MonthCalendar = ({
   currentDate,
   setSelectedDate,
-  activeCalendars,
-  addSubCalendar,
-  toggleActiveCalendar,
 }) => {
-  const { fetchTasks } = useTask();
 
-  // 子日历选项
-  const calendars = [
-    { id: "Default", name: "Default" },
-    { id: "Work", name: "Work" },
-    { id: "Personal", name: "Personal" },
-  ];
+  const { fetchTasks,activeCalendars } = useTask();
 
   // 生成该月在视图上的所有天
   const calendarGrid = useMemo(() => {
@@ -67,12 +58,7 @@ const MonthCalendar = ({
     <div className="month-calendar">
       <h2 className="calendar-header">{format(currentDate, "MMMM yyyy")}</h2>
 
-      <MonthChoiceBar
-        activeCalendars={activeCalendars}
-        calendars={calendars}
-        onSelectCalendar={toggleActiveCalendar}
-        onAddCalendar={addSubCalendar}
-      />
+      <MonthChoiceBar/>
 
       <div className="calendar-actions">
         <CalendarButton label="Import" onClick={handleImport} icon="📁" />

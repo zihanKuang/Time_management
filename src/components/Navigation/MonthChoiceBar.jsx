@@ -3,23 +3,33 @@
 // src/components/Navigation/MonthChoiceBar.jsx
 import React from "react";
 import "./MonthChoiceBar.css"; // 确保样式文件已导入
+import { useTask } from "../../services/taskContext";
 
-const MonthChoiceBar = ({ activeCalendars=[], calendars, onSelectCalendar,onAddCalendar }) => {
+const MonthChoiceBar = () => {
+
+  const { subCalendars, activeCalendars, toggleActiveCalendar, addSubCalendar } = useTask();
 
   return (
     <div className="month-choice-bar">
-      {calendars.map((calendar) => (
+      {subCalendars.map((calendar) => (
         <button
-          key={calendar.id}
+          key={calendar}
           className={`calendar-choice-button ${
-            activeCalendars.includes(calendar.id) ? "active" : ""
+            activeCalendars.includes(calendar) ? "active" : ""
           }`}
-          onClick={() => onSelectCalendar(calendar.id)}
+          onClick={() => toggleActiveCalendar(calendar)}
         >
-          {calendar.name}
+          {calendar}
         </button>
       ))}
-      <button className="add-calendar-button" onClick={onAddCalendar}>
+
+      <button
+        className="add-calendar-button"
+        onClick={() => {
+          const newCalendarName = prompt("Enter the name of the new calendar:");
+          addSubCalendar(newCalendarName);
+        }}
+      >
         + Add Calendar
       </button>
     </div>

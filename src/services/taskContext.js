@@ -26,6 +26,21 @@ const initeDB = async () => {
 
 export const TaskProvider = ({ children }) => {
   const [tasks, setTasks] = useState({});
+  const [subCalendars, setSubCalendars] = useState(["Default", "Work", "Personal"]);
+  const [activeCalendars, setActiveCalendars] = useState(["Default"]);
+
+  const addSubCalendar = (newCalendarName) => {
+    if (newCalendarName && !subCalendars.includes(newCalendarName)) {
+      setSubCalendars((prev) => [...prev, newCalendarName]);
+    }
+  };
+
+  // 切换活动子日历
+  const toggleActiveCalendar = (calendarId) => {
+    setActiveCalendars((prev) =>
+      prev.includes(calendarId) ? prev.filter((id) => id !== calendarId) : [...prev, calendarId]
+    );
+  };
 
   // 初始化加载任务
   const fetchInitialTasks = async () => {
@@ -200,6 +215,11 @@ export const TaskProvider = ({ children }) => {
         toggleTaskStatus,
         editTask,
         fetchTasks,
+        
+        subCalendars,
+        addSubCalendar,
+        activeCalendars,
+        toggleActiveCalendar,
       }}
     >
       {children}

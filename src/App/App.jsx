@@ -19,25 +19,12 @@ export default class App extends Component {
 }
 
 const MainCalendar = () => {
-  const { addTask } = useTask();
 
+  const { addTask, subCalendars, activeCalendars } = useTask();
   // 当前选中的日期
   const [currentDate, setCurrentDate] = useState(new Date());
-
-  // 子日历（默认、工作、个人）
-  const [subCalendars, setSubCalendars] = useState(["Default", "Work", "Personal"]);
-  const [activeCalendars, setActiveCalendars] = useState(["Default"]);
-
   // 控制“添加任务”表单是否可见
   const [isTaskFormVisible, setTaskFormVisible] = useState(false);
-
-  // 添加子日历
-  const addSubCalendar = useCallback(() => {
-    const newCalendarName = prompt("Enter the name of the new calendar:");
-    if (newCalendarName && !subCalendars.includes(newCalendarName)) {
-      setSubCalendars((prev) => [...prev, newCalendarName]);
-    }
-  }, [subCalendars]);
 
   // 提交添加任务
   const handleTaskSubmit = useCallback(
@@ -59,13 +46,6 @@ const MainCalendar = () => {
   const openTaskForm = () => setTaskFormVisible(true);
   const closeTaskForm = () => setTaskFormVisible(false);
 
-  // 切换活动子日历
-  const toggleActiveCalendar = useCallback((calendarId) => {
-    setActiveCalendars((prev) =>
-      prev.includes(calendarId) ? prev.filter((id) => id !== calendarId) : [...prev, calendarId]
-    );
-  }, []);
-
   return (
     <div className="main-calendar">
       <div className="calendar-section">
@@ -74,9 +54,6 @@ const MainCalendar = () => {
           <MonthCalendar
             currentDate={currentDate}
             setSelectedDate={setCurrentDate}
-            activeCalendars={activeCalendars}
-            addSubCalendar={addSubCalendar}
-            toggleActiveCalendar={toggleActiveCalendar}
           />
 
           {/* 添加任务表单 */}

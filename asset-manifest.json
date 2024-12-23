@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/Time_management/static/css/main.33b0aa89.css",
-    "main.js": "/Time_management/static/js/main.75162bd7.js",
+    "main.css": "/Time_management/static/css/main.7b0b8c01.css",
+    "main.js": "/Time_management/static/js/main.6e82f3d9.js",
     "index.html": "/Time_management/index.html",
-    "main.33b0aa89.css.map": "/Time_management/static/css/main.33b0aa89.css.map",
-    "main.75162bd7.js.map": "/Time_management/static/js/main.75162bd7.js.map"
+    "main.7b0b8c01.css.map": "/Time_management/static/css/main.7b0b8c01.css.map",
+    "main.6e82f3d9.js.map": "/Time_management/static/js/main.6e82f3d9.js.map"
   },
   "entrypoints": [
-    "static/css/main.33b0aa89.css",
-    "static/js/main.75162bd7.js"
+    "static/css/main.7b0b8c01.css",
+    "static/js/main.6e82f3d9.js"
   ]
 }

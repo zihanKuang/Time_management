@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import { format } from "date-fns"; // 导入格式化函数
 import "./TaskForm.css"; // 表单样式
 
 const TaskForm = ({ onSubmit, defaultDate, subCalendars, onClose }) => {
   const [title, setTitle] = useState("");
-  const [calendarId, setCalendarId] = useState("Default");
+  const [calendarId, setCalendarId] = useState(subCalendars[0]); // 使用第一个子日历作为默认值
   const [date, setDate] = useState(defaultDate);
 
   const handleSubmit = () => {
@@ -12,16 +13,17 @@ const TaskForm = ({ onSubmit, defaultDate, subCalendars, onClose }) => {
         onSubmit({
           title,
           calendarId,
-          date: date.toISOString(), // 转换为字符串
+          date: format(date, "yyyy-MM-dd"), // 使用一致的日期格式
           completed: false,
         });
         onClose(); // 提交成功后关闭表单
       } catch (error) {
         console.error("Failed to add task. Ensure task data is serializable:", error);
       }
+    } else {
+      alert("Task title cannot be empty!"); // 提示任务标题不能为空
     }
   };
-
 
   return (
     <div className="task-form-container">
@@ -48,7 +50,7 @@ const TaskForm = ({ onSubmit, defaultDate, subCalendars, onClose }) => {
         </select>
         <input
           type="date"
-          value={date.toISOString().split("T")[0]} // 格式化日期
+          value={format(date, "yyyy-MM-dd")} // 使用一致的日期格式
           onChange={(e) => setDate(new Date(e.target.value))}
         />
         <button onClick={handleSubmit}>Save Task</button>

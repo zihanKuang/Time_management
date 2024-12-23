@@ -51,3 +51,11 @@
 .day-calendar button:hover {
     background-color: #C5302E;
 }
+
+.no-tasks-message {
+    text-align: center;
+    color: gray;
+    font-style: italic;
+    margin-top: 20px;
+  }
+  

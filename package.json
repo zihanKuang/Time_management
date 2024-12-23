@@ -4,12 +4,11 @@
   "private": true,
   "dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.x.x",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
     "date-fns": "^4.1.0",
+    "dotenv": "^16.3.1",
     "express": "^4.21.2",
     "nodemon": "^3.1.9",
     "react": "^18.3.1",
@@ -19,12 +18,23 @@
     "sqlite3": "^5.1.7",
     "web-vitals": "^2.1.4"
   },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.9",
+    "supertest": "^6.3.3"
+  },
   "homepage": "https://zihankuang.github.io/Time_management",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "start:server": "node backend/src/server.js",
+    "dev:server": "nodemon backend/src/server.js",
+    "test:server": "jest --coverage",
+    "migrate:server": "node backend/src/db/index.js"
   },
   "eslintConfig": {
     "extends": [
@@ -44,5 +54,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy":"http://localhost:5000"
+  "proxy": "http://localhost:5000"
 }

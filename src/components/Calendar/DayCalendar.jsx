@@ -1,4 +1,3 @@
-// src/components/Calendar/DayCalendar.jsx
 import React, { useMemo } from "react";
 import CalendarBase from "./CalendarBase";
 import { useTask } from "../../services/taskContext";
@@ -18,20 +17,24 @@ export const DayCalendar = ({ currentDate, activeCalendars }) => {
       <CalendarBase
         currentDate={currentDate}
         fetchTasks={(date) => fetchTasks(date, activeCalendars || [])}
-        renderTasks={() => (
-          <ul className="day-calendar-task-list">
-            {currentTasks.map((task) => (
-              <li key={task.id} className="day-calendar-task-item">
-                <TaskItem
-                  date={currentDate}
-                  task={task}
-                  onDelete={deleteTask}
-                  onEdit={editTask}
-                />
-              </li>
-            ))}
-          </ul>
-        )}
+        renderTasks={() =>
+          !currentTasks || currentTasks.length === 0 ? (
+            <p className="no-tasks-message">No tasks for this date</p>
+          ) : (
+            <ul className="day-calendar-task-list">
+              {currentTasks.map((task) => (
+                <li key={task.id} className="day-calendar-task-item">
+                  <TaskItem
+                    date={currentDate}
+                    task={task}
+                    onDelete={deleteTask}
+                    onEdit={editTask}
+                  />
+                </li>
+              ))}
+            </ul>
+          )
+        }
       />
     </div>
   );

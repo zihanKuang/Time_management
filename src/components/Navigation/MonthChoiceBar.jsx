@@ -1,16 +1,16 @@
-// 渲染子日历的导航条，点哪个显示哪个，可以多个同时显示
+// Renders a navigation bar for toggling sub-calendars visibility and adding new calendars
 
 // src/components/Navigation/MonthChoiceBar.jsx
 import React from "react";
-import "./MonthChoiceBar.css"; // 确保样式文件已导入
+import "./MonthChoiceBar.css"; // Import the corresponding styles
 import { useTask } from "../../services/taskContext";
 
 const MonthChoiceBar = () => {
-
   const { subCalendars, activeCalendars, toggleActiveCalendar, addSubCalendar } = useTask();
 
   return (
     <div className="month-choice-bar">
+      {/* Render a button for each sub-calendar */}
       {subCalendars.map((calendar) => (
         <button
           key={calendar}
@@ -23,11 +23,14 @@ const MonthChoiceBar = () => {
         </button>
       ))}
 
+      {/* Button to add a new sub-calendar */}
       <button
         className="add-calendar-button"
         onClick={() => {
           const newCalendarName = prompt("Enter the name of the new calendar:");
-          addSubCalendar(newCalendarName);
+          if (newCalendarName) {
+            addSubCalendar(newCalendarName);
+          }
         }}
       >
         + Add Calendar
@@ -36,4 +39,4 @@ const MonthChoiceBar = () => {
   );
 };
 
-export default MonthChoiceBar; // 确保使用的是默认导出
+export default MonthChoiceBar; // Default export for the component

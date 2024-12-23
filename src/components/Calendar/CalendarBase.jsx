@@ -3,17 +3,17 @@ import PropTypes from "prop-types";
 import { format } from "date-fns";
 
 const CalendarBase = ({ currentDate, fetchTasks, renderTasks }) => {
-  // 使用 useMemo 优化任务获取
+  // Optimize task fetching by memoizing the result
   const tasks = useMemo(() => fetchTasks(currentDate), [currentDate, fetchTasks]);
 
-  // 格式化日期
+  // Format the given date as "yyyy-MM-dd"
   const formatDate = (date) => format(new Date(date), "yyyy-MM-dd");
 
   return (
     <div>
       <h1>Tasks for {formatDate(currentDate)}</h1>
       {renderTasks ? (
-        renderTasks(tasks)
+        renderTasks(tasks) // Use custom render function if provided
       ) : (
         <ul>
           {tasks.map((task) => (
@@ -26,8 +26,11 @@ const CalendarBase = ({ currentDate, fetchTasks, renderTasks }) => {
 };
 
 CalendarBase.propTypes = {
+  // The selected date to display tasks for
   currentDate: PropTypes.instanceOf(Date).isRequired,
+  // Function to retrieve tasks for a specific date
   fetchTasks: PropTypes.func.isRequired,
+  // Optional custom render function for tasks
   renderTasks: PropTypes.func,
 };
 

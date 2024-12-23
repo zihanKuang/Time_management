@@ -19,44 +19,38 @@ export default class App extends Component {
 }
 
 const MainCalendar = () => {
-
   const { addTask, subCalendars, activeCalendars } = useTask();
-  // 当前选中的日期
-  const [currentDate, setCurrentDate] = useState(new Date());
-  // 控制“添加任务”表单是否可见
-  const [isTaskFormVisible, setTaskFormVisible] = useState(false);
 
-  // 提交添加任务
+  const [currentDate, setCurrentDate] = useState(new Date()); // Selected date state
+  const [isTaskFormVisible, setTaskFormVisible] = useState(false); // Task form visibility state
+
+  // Handles task submission
   const handleTaskSubmit = useCallback(
     (newTask) => {
       addTask({
         ...newTask,
-        // 如果表单里没指定日期，就使用 currentDate；并且统一转成字符串
-        date: newTask.date || currentDate.toISOString(),
-        // 默认所属子日历
-        calendarId: newTask.calendarId || activeCalendars[0] || "Default",
+        date: newTask.date || currentDate.toISOString(), // Use current date if no date is specified
+        calendarId: newTask.calendarId || activeCalendars[0] || "Default", // Default to the first active calendar
       });
-      // 提交完关表单
-      setTaskFormVisible(false);
+      setTaskFormVisible(false); // Close the form after submission
     },
     [addTask, currentDate, activeCalendars]
   );
 
-  // 控制表单显隐
-  const openTaskForm = () => setTaskFormVisible(true);
-  const closeTaskForm = () => setTaskFormVisible(false);
+  const openTaskForm = () => setTaskFormVisible(true); // Show the task form
+  const closeTaskForm = () => setTaskFormVisible(false); // Hide the task form
 
   return (
     <div className="main-calendar">
       <div className="calendar-section">
-        {/* 月视图 */}
+        {/* Monthly calendar view */}
         <div className="month-calendar">
           <MonthCalendar
             currentDate={currentDate}
             setSelectedDate={setCurrentDate}
           />
 
-          {/* 添加任务表单 */}
+          {/* Task form for adding new tasks */}
           {isTaskFormVisible && (
             <TaskForm
               onSubmit={handleTaskSubmit}
@@ -73,7 +67,7 @@ const MainCalendar = () => {
           </div>
         </div>
 
-        {/* 日视图 */}
+        {/* Daily calendar view */}
         <div className="day-calendar">
           <DayCalendar currentDate={currentDate} activeCalendars={activeCalendars} />
         </div>

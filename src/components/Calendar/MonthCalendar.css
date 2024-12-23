@@ -1,13 +1,13 @@
-/* 日历网格 */
+/* Grid layout for the calendar */
 .calendar-grid {
   display: grid;
-  grid-template-columns: repeat(7, 100px); /* 每列固定宽度 */
+  grid-template-columns: repeat(7, 100px); /* Fixed column width */
   gap: 10px;
   justify-content: center;
   align-content: center;
 }
 
-/* 日历单元格 */
+/* Styles for individual calendar cells */
 .calendar-cell {
   width: 100px;
   height: 100px;
@@ -22,19 +22,19 @@
   box-sizing: border-box;
 }
 
-/* 鼠标悬停效果 */
+/* Hover effect for calendar cells */
 .calendar-cell:hover {
   background-color: #9fddec;
   transform: scale(1.05);
 }
 
-/* 当前选中日期 */
+/* Styles for the selected date */
 .calendar-cell.selected {
   background-color: #e53542;
   color: white;
 }
 
-/* 月外日期 */
+/* Styling for dates outside the current month */
 .calendar-cell.outside-month {
   color: #a0a0a0;
 }

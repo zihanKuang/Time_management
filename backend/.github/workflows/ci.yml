@@ -1,67 +1,36 @@
-name: Backend CI/CD Pipeline
+name: Build, Test, and Deploy
 
 on:
   push:
     branches:
-      - main  # 触发分支
+      - main
   pull_request:
-    branches:
-      - main  # 合并到 main 分支时触发
 
 jobs:
-  # 测试阶段
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18  # 设置 Node.js 版本
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Prepare SQLite database
-        run: |
-          touch database.sqlite
-          node -e "
-          const sqlite3 = require('sqlite3').verbose();
-          const db = new sqlite3.Database('database.sqlite');
-          db.serialize(() => {
-            db.run('CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, date TEXT NOT NULL, calendarId TEXT NOT NULL, completed BOOLEAN DEFAULT FALSE)');
-            db.run('CREATE TABLE IF NOT EXISTS calendars (name TEXT PRIMARY KEY)');
-          });
-          db.close();
-          "
-
-      - name: Run tests
-        run: npm test
-
-  # 部署阶段
-  deploy:
-    needs: test  # 确保测试通过后才运行
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
 
-      - name: Install dependencies
-        run: npm install
+    - name: Install dependencies
+      run: npm install
 
-      - name: Deploy to Heroku
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}  # 在 GitHub Secrets 中设置
-          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
-        run: |
-          npm install -g heroku
-          heroku git:remote -a $HEROKU_APP_NAME
-          git push heroku main
+    - name: Run tests
+      run: npm test -- --watchAll=false
+
+    - name: Build project
+      run: npm run build
+
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        branch: gh-pages
+        folder: build

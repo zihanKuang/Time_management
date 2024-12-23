@@ -1,13 +1,13 @@
-/* 全局容器 */
+/* Main container layout */
 .app-container {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #F7F7F7; /* 主背景色 */
-  font-family: Arial, sans-serif;
+  background-color: #F7F7F7; /* Primary background color */
+  font-family: Josefin Sans, sans-serif;
 }
 
-/* 标题样式 */
+/* Application title styling */
 .app-title {
   text-align: center;
   margin: 0;
@@ -16,35 +16,34 @@
   color: #1636C7;
 }
 
-/* 主日历容器 */
+/* Primary calendar layout */
 .main-calendar {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
-/* 日历区布局 */
+/* Calendar section split into day and month views */
 .calendar-section {
   flex: 1;
   display: flex;
 }
 
-/* 日任务（左侧） */
+/* Day calendar section (left) */
 .day-calendar {
   flex: 3;
   margin-right: 10px;
 }
 
-/* 月视图 */
+/* Month view section (right) */
 .month-calendar {
   flex: 2;
   padding: 10px;
   border-right: 1px solid #ccc;
-  position: relative; /* 为 TaskForm 的定位提供支持 */
+  position: relative; /* Enables positioning of TaskForm */
 }
 
-
-/* 控制按钮区 */
+/* Control button container */
 .calendar-controls {
   display: flex;
   justify-content: space-around;
@@ -52,29 +51,29 @@
   border-top: 1px solid #ddd;
 }
 
-/* 子日历按钮 */
+/* General calendar button styling */
 .calendar-button {
   padding: 10px 20px;
   font-size: 14px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  background-color: #E53542;
+  background-color: #E53542; /* Default button background */
   color: white;
   transition: background-color 0.3s;
 }
 
 .calendar-button.active {
-  background-color: #61A2F9;
+  background-color: #61A2F9; /* Active state background */
 }
 
 .calendar-button:hover {
-  background-color: #C5302E;
+  background-color: #C5302E; /* Hover state background */
 }
 
-/* 添加子日历按钮 */
-.add-calendar-button{
-  background-color: #9FDDEC;
+/* Add calendar button */
+.add-calendar-button {
+  background-color: #9FDDEC; /* Light blue background */
   color: #000;
   padding: 10px 20px;
   border: none;
@@ -83,6 +82,11 @@
   transition: background-color 0.3s;
 }
 
+.add-calendar-button:hover {
+  background-color: #7CC1C4; /* Hover state */
+}
+
+/* Add task button */
 .add-task-button {
   background-color: #9FDDEC;
   color: #000;
@@ -91,9 +95,5 @@
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
-  margin-left: auto; /* 将按钮推到最右侧 */
-}
-
-.add-calendar-button:hover {
-  background-color: #7CC1C4;
+  margin-left: auto; /* Aligns button to the right */
 }

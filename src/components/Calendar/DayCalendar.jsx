@@ -7,7 +7,7 @@ import "./DayCalendar.css";
 export const DayCalendar = ({ currentDate, activeCalendars }) => {
   const { fetchTasks, deleteTask, editTask } = useTask();
 
-  // 当天任务（过滤子日历）
+  // Fetch and filter tasks for the selected date and active calendars
   const currentTasks = useMemo(() => {
     return fetchTasks(currentDate, activeCalendars || []);
   }, [currentDate, activeCalendars, fetchTasks]);
@@ -19,8 +19,10 @@ export const DayCalendar = ({ currentDate, activeCalendars }) => {
         fetchTasks={(date) => fetchTasks(date, activeCalendars || [])}
         renderTasks={() =>
           !currentTasks || currentTasks.length === 0 ? (
+            // Display a message if no tasks are available
             <p className="no-tasks-message">No tasks for this date</p>
           ) : (
+            // Render the task list
             <ul className="day-calendar-task-list">
               {currentTasks.map((task) => (
                 <li key={task.id} className="day-calendar-task-item">

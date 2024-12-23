@@ -1,61 +1,62 @@
-/* 日任务列表容器 */
+/* Container for the daily task list */
 .day-calendar {
-    background-color: #9FDDEC; /* 背景色 */
+    background-color: #9FDDEC; /* Background color */
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow-y: auto; /* 如果任务多，支持滚动 */
+    overflow-y: auto; /* Enable scrolling for long lists */
 }
 
-/* 任务列表样式 */
+/* Styling for the task list */
 .day-calendar ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-/* 任务项样式 */
+/* Styling for individual task items */
 .day-calendar li {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
     padding: 10px;
-    background-color: #FBDE7A; /* 任务背景色 */
+    background-color: #FBDE7A; /* Task background color */
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* 任务复选框 */
+/* Styling for the task checkbox */
 .day-calendar input[type="checkbox"] {
     margin-right: 10px;
 }
 
-/* 任务标题 */
+/* Styling for the task title text */
 .day-calendar span {
     flex-grow: 1;
     font-size: 16px;
 }
 
-/* 按钮样式 */
+/* Button styling */
 .day-calendar button {
     margin-left: 5px;
     padding: 5px 10px;
     border: none;
     border-radius: 5px;
-    background-color: #E53542; /* 按钮背景色 */
+    background-color: #E53542; /* Button background color */
     color: white;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
+/* Hover effect for buttons */
 .day-calendar button:hover {
     background-color: #C5302E;
 }
 
+/* Styling for the "no tasks" message */
 .no-tasks-message {
     text-align: center;
     color: gray;
     font-style: italic;
     margin-top: 20px;
-  }
-  
+}

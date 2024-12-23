@@ -4,10 +4,10 @@ const path = require('path');
 
 const DB_PATH = process.env.DB_PATH || './src/db/database.db';
 
-// 解析绝对路径，确保不会出现路径问题
+// Resolve the absolute path to ensure no path issues occur
 const dbFilePath = path.resolve(__dirname, '..', 'db', path.basename(DB_PATH));
 
-// 连接/创建数据库
+// Connect to or create the SQLite database
 const db = new sqlite3.Database(dbFilePath, (err) => {
   if (err) {
     console.error('[DB] Failed to connect to SQLite database:', err);
@@ -16,7 +16,7 @@ const db = new sqlite3.Database(dbFilePath, (err) => {
   }
 });
 
-// 在这里执行一次性建表操作，或调用 migrations 文件夹脚本
+// Run initialization queries to create tables if they do not exist
 db.serialize(() => {
   db.run(`
     CREATE TABLE IF NOT EXISTS tasks (

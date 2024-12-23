@@ -1,7 +1,7 @@
 const db = require('../db');
 
 const SubCalendarModel = {
-  // 获取全部子日历
+  // Retrieve all sub-calendars from the database
   getAll() {
     return new Promise((resolve, reject) => {
       db.all('SELECT * FROM subCalendars', [], (err, rows) => {
@@ -11,7 +11,7 @@ const SubCalendarModel = {
     });
   },
 
-  // 新增子日历
+  // Create a new sub-calendar
   create(name) {
     return new Promise((resolve, reject) => {
       db.run(`INSERT INTO subCalendars (name) VALUES (?)`, [name], function (err) {

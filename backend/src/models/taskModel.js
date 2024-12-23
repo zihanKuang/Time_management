@@ -1,7 +1,7 @@
 const db = require('../db');
 
 const TaskModel = {
-  // 获取所有任务
+  // Retrieve all tasks from the database
   getAllTasks() {
     return new Promise((resolve, reject) => {
       db.all('SELECT * FROM tasks', [], (err, rows) => {
@@ -11,7 +11,7 @@ const TaskModel = {
     });
   },
 
-  // 新增任务
+  // Create a new task
   createTask(task) {
     const { title, calendarId, date, completed } = task;
     return new Promise((resolve, reject) => {
@@ -21,16 +21,15 @@ const TaskModel = {
         [title, calendarId, date, completed ? 1 : 0],
         function (err) {
           if (err) return reject(err);
-          // this.lastID是SQLite插入后的自增ID
+          // Return the newly created task with its auto-generated ID
           resolve({ id: this.lastID, ...task });
         }
       );
     });
   },
 
-  // 更新任务
+  // Update an existing task
   updateTask(id, updatedFields) {
-    // 这里只演示更新title, completed
     const { title, completed } = updatedFields;
     return new Promise((resolve, reject) => {
       db.run(
@@ -38,13 +37,14 @@ const TaskModel = {
         [title, completed ? 1 : 0, id],
         function (err) {
           if (err) return reject(err);
+          // Return the updated task details
           resolve({ id, title, completed });
         }
       );
     });
   },
 
-  // 删除任务
+  // Delete a task by its ID
   deleteTask(id) {
     return new Promise((resolve, reject) => {
       db.run('DELETE FROM tasks WHERE id=?', [id], function (err) {

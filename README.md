@@ -1,160 +1,264 @@
-# Project Title: Task & Calendar Management App
+### Table of Contents
 
-## Overview
+1. [Project Overview](#1-project-overview)
+2. [Key Features & SW Factory Alignment](#2-key-features--sw-factory-alignment)
+3. [Tech Stack](#3-tech-stack)
+4. [How to Run Locally](#4-how-to-run-locally)
+5. [Project Structure](#5-project-structure)
+6. [DevOps & CI/CD Approach](#6-devops--cicd-approach)
+7. [SDK: Integrating in Other Projects](#7-sdk-integrating-in-other-projects)
+8. [Future Enhancements](#8-future-enhancements)
+9. [Conclusion](#9-conclusion)
+10. [Contact](#10-contact)
 
-This project is a **full-stack application** using **Node.js**, **Express**, **SQLite**, and **React** to provide a calendar and task management system. The **frontend** offers daily and monthly views for tasks and scheduling, while the **backend** exposes a RESTful API with data persisted in SQLite. Additionally, it leverages IndexedDB in the browser for enhanced client-side performance.
+------
 
-Beyond standard full-stack features, the project highlights:
+## 1. Project Overview
 
-1. **DevOps Orientation**:
-   - Clean, modular backend ready for containerization and integration into CI/CD pipelines, enabling **rapid deployment** to production.
-   - Dynamic configuration via environment variables (`.env`) ensures flexibility for various deployment environments.
-2. **Fast Iteration**:
-   - The project’s scope is well-defined and can be quickly delivered as an MVP, aligned with a "Software Development Kit + Continuous Integration/Continuous Deployment" approach.
-   - Frontend-backend separation allows **parallel development** in teams, speeding up delivery cycles.
-3. **Scalability & Extensibility**:
-   - Emphasis on **modular** code organization—components in the frontend, controllers/routes/models in the backend—making it straightforward to expand or customize.
-   - Demonstrates **DevOps** best practices for building and deploying agile software.
-4. **Versatile for Various Roles**:
-   - Showcases **full-stack** skills (DB design, REST API development, frontend UI/UX).
-   - Also underscores **DevOps** and **Agile** principles crucial to roles involving rapid software delivery.
+This **Task & Calendar Management App** is a **full-stack** solution showcasing **Node.js**, **Express**, **SQLite**, and **React** to provide a rich feature set for managing calendars, tasks, and daily or monthly schedules. By design, it demonstrates a **DevOps** mindset with flexible CI/CD integration and swift, modular development cycles—ideal for organizations focusing on delivering software fast and frequently (*“SW Factory” style*).
 
-## Key Features
+**Key highlights**:
 
-1. **Multiple Calendars (SubCalendars)**:
-   Create multiple calendars (e.g. “Work,” “Personal”) to categorize tasks.
-2. **Task Management**:
-   - Create, read, update, and delete tasks (CRUD operations).
-   - Toggle completion status.
-   - Filter tasks by date or calendar.
-3. **Daily & Monthly Views**:
-   - **Day View**: Focus on tasks for a selected date; directly edit or toggle completion.
-   - **Month View**: Displays a monthly overview of tasks; clicking a day jumps to its details.
-4. **IndexedDB + SQLite**:
-   - **SQLite** on the server for persistent storage.
-   - **IndexedDB** in the browser for faster local reads and caching.
-5. **RESTful API**:
-   - Endpoints for tasks: `GET /api/tasks`, `POST /api/tasks`, `PUT /api/tasks/:id`, `DELETE /api/tasks/:id`.
-   - Endpoints for sub-calendars: `GET /api/subCalendars`, `POST /api/subCalendars`.
+- **Frontend**: Built with React (using Indexed DB for faster local reads), offering daily and monthly calendars, sub-calendars, and a task management interface.
+- **Backend**: Exposes a RESTful API (Node.js/Express) with data persisted in **SQLite** for simplicity and portability; designed for containerization and flexible environment configs.
+- **DevOps Orientation**: Prepared for automated builds, testing, and deployments using environment variables, well-structured modules, and CI/CD-friendly architecture.
 
-## Tech Stack
+------
 
-- **Frontend**:
-  - [React.js](https://reactjs.org/)
-  - [date-fns](https://date-fns.org/) for date handling
-  - IndexedDB (using [idb](https://github.com/jakearchibald/idb))
-  - CSS (or CSS Modules) for styling
-- **Backend**:
-  - [Node.js](https://nodejs.org/) + [Express.js](https://expressjs.com/)
-  - [SQLite](https://www.sqlite.org/)
-  - Well-structured RESTful API with controllers, models, and routes
-- **Deployment & Running**:
-  - Local development with `npm / yarn`
-  - Containerization (e.g., Docker) for quick CI/CD integration
+## 2. Key Features & SW Factory Alignment
 
-## Quick Start
+1. **DevOps & SW Factory Readiness**
+   - Clear separation of concerns in code structure (controllers/models/routes).
+   - Quick setup for continuous integration and continuous deployment (e.g., Docker, GitHub Actions).
+   - Minimal friction for feature additions and incremental deliveries.
+2. **Fast Iteration**
+   - Tight scope with immediate MVP potential: quickly spin up an internal pilot or proof-of-concept.
+   - Frontend-backend decoupling allows parallel development, a cornerstone of rapid software factories.
+3. **Task & Calendar Modules**
+   - **SubCalendars**: Users can create multiple calendars (“Work”, “Personal”), each with its own tasks.
+   - **Task Management**: CRUD operations, toggling completion status, and advanced filtering by calendar/date.
+4. **User Experience**
+   - **Daily View**: Focused snapshot of tasks for the day with easy toggles.
+   - **Monthly View**: Quick overview of the entire month, day-click to show daily details.
+5. **Extensible Architecture**
+   - The app can be integrated into larger ecosystems with minimal overhead: highlight of an SDK-like approach for calendar and task functionalities.
+   - Support for advanced expansions (e.g., user authentication, role-based access control, priority tasks, AI-based suggestions).
 
-Below is a typical local development workflow:
+------
 
-1. **Clone the repository**:
+## 3. Tech Stack
+
+| **Layer**      | **Technology**                                               |
+| -------------- | ------------------------------------------------------------ |
+| **Frontend**   | [React](https://reactjs.org/), IndexedDB (via [idb](https://github.com/jakearchibald/idb)), CSS Modules, [date-fns](https://date-fns.org/) |
+| **Backend**    | [Node.js](https://nodejs.org/), [Express](https://expressjs.com/), [SQLite](https://www.sqlite.org/) |
+| **DevOps**     | Ready for Dockerization, `.env` configs, Git-based CI/CD (GitHub Actions) |
+| **Testing**    | [Jest](https://jestjs.io/)                                   |
+| **Deployment** | Container-based or standard Node environment                 |
+
+------
+
+## 4. How to Run Locally
+
+Below is the typical local development workflow:
+
+1. **Clone the Repository**
 
    ```bash
    git clone https://github.com/your-username/your-repo.git
    cd your-repo
    ```
 
-2. **Install dependencies**:
+2. **Install Dependencies**
 
    ```bash
-   npm install
+   npm install     # Installs backend dependencies
    cd client
-   npm install
+   npm install     # Installs frontend dependencies
    cd ..
    ```
 
-3. **Configure environment variables** (optional):
+3. **Configure Environment Variables** *(optional)*
 
-   - In the 
+   Create a .env file in the root directory (same level as package.json) with variables like: 
 
-     ```
-     .env
-     ```
+   ```bash
+   PORT=4000
+   DB_PATH=./src/db/database.db
+   ```
+   
+4. **Run the Development Servers**
 
-      file, you may specify: 
+   Start the backend: 
 
-     ```
-     PORT=4000
-     DB_PATH=./src/db/database.db
-     ```
+   ```bash
+   npm run server
+   ```
 
-4. **Run the development environment**:
+   Start the frontend: 
 
-   - Start the backend: 
+   ```bash
+   cd client
+   npm start
+   ```
 
-     ```bash
-     npm run server
-     ```
+   Open [http://localhost:3000](http://localhost:3000/) in your browser to access the application.
 
-   - Start the frontend: 
+------
 
-     ```bash
-     cd client
-     npm start
-     ```
-
-   - Navigate to [http://localhost:3000](http://localhost:3000/) in your browser to view the app.
-
-## Project Structure
+## 5. Project Structure
 
 ```bash
 .
-├── controllers/         # Express controllers handling business logic
-│   ├── subCalendarController.js
-│   └── taskController.js
-├── db/                  # Database setup and initialization
-├── models/              # Database models for tasks and subCalendars
-├── routes/              # Express routes mapping HTTP endpoints to controllers
-│   ├── subCalendars.js
-│   └── tasks.js
-├── src/                 # React source code
-│   ├── components/      # UI components (Calendar, Task, Navigation, etc.)
-│   ├── services/        # Global state management & utilities (taskContext, dbUtils)
-│   └── App.jsx
-├── .env                 # Environment variables
-├── package.json
-└── README.md
+├── backend/                 # Backend implementation
+│   ├── src/                 # Core backend functionality
+│   │   ├── controllers/     # API logic for tasks and calendars
+│   │   ├── models/          # Database interaction layers
+│   │   ├── routes/          # REST API endpoints
+│   │   ├── db/              # SQLite setup and migrations
+│   │   └── tests/           # Backend tests
+│   ├── .github/workflows/   # CI/CD pipeline configuration
+│   ├── .env                 # Environment variables
+│   └── package.json         # Backend dependencies and scripts
+│
+├── src/                     # Frontend implementation
+│   ├── App/                 # Main React App component
+│   ├── components/          # Modular UI components
+│   ├── services/            # React Context and state management
+│   ├── utils/               # Utility functions
+│   ├── __test__/            # Frontend unit tests
+│   └── index.js             # Application entry point
+│
+├── public/                  # Static assets for the frontend
+├── package.json             # Frontend dependencies and scripts
+└── README.md                # Project documentation
 ```
 
-- **controllers/**: Handles API logic for tasks and sub-calendars.
-- **models/**: Database layer with CRUD operations.
-- **routes/**: Routes define the API endpoints.
-- **src/**: React application with component-based architecture and IndexedDB usage.
+------
 
-## DevOps / CI/CD Approach
+## 6. DevOps & CI/CD Approach
 
-- **Automated Testing**
-  - Add unit and integration tests (e.g., [Jest](https://jestjs.io/) + [Supertest](https://www.npmjs.com/package/supertest)) to be run automatically on commit or pull requests.
-- **Continuous Integration**
-  - Use GitHub Actions, GitLab CI, or Jenkins to automate testing and building on every code push.
-  - Generate build artifacts (bundled frontend, optimized backend) upon successful tests.
-- **Continuous Deployment**
-  - Deploy artifacts to target environments (AWS, Azure, Heroku, etc.) automatically or semi-automatically via scripts.
-  - For **Docker-based** deployments, build and publish images, then pull and run the container for upgrades.
+1. **Automated Testing**
 
-## Future Enhancements
+   Recommend `jest` for unit tests and `supertest` for integration testing, ensuring reliability.
 
-- **User System & Authentication**: Multi-user roles, login access control.
-- **Notifications & Reminders**: Email/SMS or real-time push for due tasks.
+2. **Continuous Integration**
 
-## Conclusion
+   Configure CI pipelines to run tests and lint checks automatically.
 
-This project demonstrates **end-to-end** development with **Node.js + Express + SQLite + React**, showcasing:
+3. **Continuous Deployment**
 
-- **Frontend** component-based design and interactive UX.
-- **Backend** RESTful APIs and structured data handling.
-- **DevOps** culture (CI/CD pipelines, environment management) and **agile** mindset.
+   **Containerization**: The Node + SQLite structure can be Dockerized quickly.
 
-**Contact**:
+   Deployment to AWS, Azure, or on-premises servers can be triggered automatically once CI tests pass.
 
-- Email: zihan_kuang@outlook.com
-- LinkedIn:  https://www.linkedin.com/in/zihan-kuang-6087b2329/
+   `.env` usage for environment-specific configurations, ensuring portability.
+
+4. **Agile & Iterative Delivery**
+
+   The repository is organized for easy extension in sprints.
+
+   Parallel development of frontend and backend fosters a shorter feedback loop.
+
+This workflow embodies fast iteration, test-driven changes, and the kind of **continuous software delivery** desired in a modern software factory context.
+
+------
+
+## 7. **SDK: Integrating in Other Projects**
+
+This project is modular enough to function like an **SDK** for task and calendar features in a React/Node ecosystem. Below is a high-level guide for integrating these modules into an external application:
+
+### 7.1 Installation & Setup
+
+1. **Include or reference the module**
+
+   If published, you might do: 
+
+   ```bash
+   npm install my-task-calendar-sdk
+   ```
+
+   Otherwise, add this repo as a Git submodule or copy the relevant directories (`controllers`, `models`, `routes`, `services`) into your existing project.
+
+2. **Backend Integration**
+
+   **Routes**: Merge or mount the `taskRoutes` and `subCalendarRoutes` onto your existing Express application.
+
+   **Models/Controllers**: Ensure your environment variables (`DB_PATH`, etc.) are correctly set so the SQLite DB is accessible.
+
+   For containerization, add these modules to your Dockerfile and confirm your `.env` is included or injected at runtime.
+
+3. **Frontend Integration**
+
+   If you want to reuse the React components: 
+
+   1. Import the `TaskProvider` from the `services/taskContext`.
+   2. Wrap your top-level App (or a sub-tree) with ` ... `.
+   3. Use the provided components like , in your existing React UI.
+
+   Adjust styling as needed, or override the default CSS in your own theme.
+
+4. **Environment Variables**
+
+   Configure a .env file or environment variables in your deployment infrastructure. Example: 
+
+   ```
+   PORT=5000
+   DB_PATH=/app/db/my-database.db
+   ```
+
+   This ensures the backend picks up the correct DB location and network port.
+
+### 7.2 Example Usage in Your React App
+
+```jsx
+// In your main App.jsx
+import React from 'react';
+import { TaskProvider } from 'my-task-calendar-sdk'; // or your local path
+import DayCalendar from 'my-task-calendar-sdk/components/Calendar/DayCalendar';
+import MonthCalendar from 'my-task-calendar-sdk/components/Calendar/MonthCalendar';
+
+function App() {
+  return (
+    <TaskProvider> 
+      <div>
+        <h1>My Existing App + Task SDK</h1>
+        <MonthCalendar />
+        <DayCalendar />
+      </div>
+    </TaskProvider>
+  );
+}
+
+export default App;
+```
+
+This setup **instantly** grants your application the calendar logic and data model from the Task & Calendar Management SDK.
+
+------
+
+## 8. Future Enhancements
+
+1. **User & Authentication**: Multi-tenant usage with secure logins and role-based access.
+2. **CSV Import/Export**: For bulk data import and backups.
+3. **Task Prioritization & AI Suggestions**: Automatic scheduling recommendations based on deadlines, workload, or ML-based ranking.
+4. **Collaborative Features**: Shared calendars for team projects, real-time task updates via Web Sockets.
+
+------
+
+## 9. Conclusion
+
+This **Task & Calendar Management** project demonstrates:
+
+- **Full-stack** proficiency (React + Node.js/Express + SQLite).
+- A design ready for **DevOps** pipelines, making it easy to continuously integrate, test, and deploy.
+- **SDK-like modularity** for easy adoption in other projects, showcasing knowledge in agile development, containerization, and CI/CD best practices.
+- A thoughtful approach to performance (Indexed DB caching) and architecture (controllers/models separation, environment variables, easy expansions).
+
+------
+
+## 10. Contact
+
+- **Author**: Zihan Kuang
+- **Email**: [zihan_kuang@outlook.com](mailto:zihan_kuang@outlook.com)
+- **LinkedIn**: https://www.linkedin.com/in/zihan-kuang-6087b2329/
